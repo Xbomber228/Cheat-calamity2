@@ -3,15 +3,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Roboj
 local themeName = "RJTheme3"
 local Window = Library.CreateLib("Cheats", themeName)
 
--- Функция для безопасного телепорта
-local function teleportTo(cframe)
-    local player = game.Players.LocalPlayer
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = cframe
-    end
-end
-
--- Проверка и ожидание загрузки персонажа
+-- Функция для ожидания загрузки персонажа
 local function waitForCharacter()
     local player = game.Players.LocalPlayer
     if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
@@ -20,11 +12,20 @@ local function waitForCharacter()
     return player.Character
 end
 
--- Вкладка "Cheats"
+-- Функция для безопасного телепорта
+local function teleportTo(cframe)
+    local player = game.Players.LocalPlayer
+    local character = waitForCharacter()
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = cframe
+    end
+end
+
+-- Создаем вкладки и секции
 local CheatsTab = Window:NewTab("Cheats")
 local CheatsSection = CheatsTab:NewSection("Cheats")
 
--- Слайдеры
+-- Слайдеры для скорости и прыжка
 CheatsSection:NewSlider("Speed", "Change WalkSpeed", 500, 0, function(s)
     local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
     if humanoid then
@@ -37,6 +38,11 @@ CheatsSection:NewSlider("Jump Power", "Change JumpPower", 500, 0, function(s)
     if humanoid then
         humanoid.JumpPower = s
     end
+end)
+
+-- Кнопка Anti-AFK
+CheatsSection:NewButton("AntiAfk", "AntiAfk", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ArgetnarYT/scripts/main/AntiAfk2.lua"))()
 end)
 
 -- Секция "SecretZone + Badge"
@@ -81,6 +87,6 @@ end)
 SecretSection:NewButton("hyperDust", "", function()
     teleportTo(CFrame.new(118.201523, 80.9879303, 1064.12183))
 end)
-SecretSection:NewButton("Furry666", "", function()
+SecretSection:NewButton("Furry404", "", function()
     teleportTo(CFrame.new(118.201523, 80.9879303, 533.189026))
 end)
